@@ -1,0 +1,150 @@
+<template>
+  <view>
+    <image src="/../img/images/u24.png">
+      <view class="container">
+        <view class="header">
+          <text>绑定资产系统账号</text>
+        </view>
+        <form bindsubmit="formSubmit">
+          <view class="section">
+            <van-cell-group>
+              <van-field placeholder="账号"
+                         left-icon="friends"
+                         title-width="100px"
+                         name="username"
+                         bind:input="user_name"
+                         clearable />
+            </van-cell-group>
+          </view>
+          <view class="section">
+            <van-cell-group>
+              <van-field placeholder="密码"
+                         bind:input="user_pass"
+                         left-icon="eye"
+                         name="password"
+                         clearable
+                         password />
+            </van-cell-group>
+          </view>
+          <view class="button">
+            <van-button size="large"
+                        bindtap="btn"
+                        type="info">绑定</van-button>
+          </view>
+        </form>
+      </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import md5 from '../utils/md5.js'
+  // 导入fetch
+  import fetch from '../utils/fetch'
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '',
+      usingComponents: {
+        'van-button': '../weapp/button/index',
+        'van-field': '../weapp/field/index'
+      }
+    }
+    data = {
+      user_name: '',
+      user_password: '',
+      canIUse: wx.canIUse('button.open-type.getUserInfo'),
+      isHide: false,
+      code: ''
+    }
+    methods = {
+      user_name(e) {
+        this.user_name = e.detail
+      },
+      user_pass(e) {
+        this.user_password = e.detail
+      },
+      async btn() {
+        const loginRes = await fetch({
+          // 自行补上自己的 APPID 和 SECRET
+          // url: 'https://api.weixin.qq.com/sns/jscode2session?appid=自己的APPID&secret=自己的SECRET&js_code=' + res.code + '&grant_type=authorization_code'
+          url: '/ddwx/wx/login/wxauth/loginmodel',
+          method: 'POSt',
+          data: {
+            user_name: this.user_name,
+            user_password: md5.hex_md5(this.user_password),
+            code: this.code
+          }
+        })
+        console.log(loginRes)
+        if (loginRes.code === '200000') {
+          const token = loginRes.result.token
+          wepy.setStorageSync('token', token)
+          wx.switchTab({
+            url: '/pages/home'
+          })
+        } else {
+          wx.showToast({
+            title: '请登入用户名和密码',
+            icon: 'none',
+            duration: 2000,
+            mask: true
+          })
+        }
+      }
+    }
+
+    onLoad() {
+      wx.login({
+        success: res => {
+          // 获取到用户的 code 之后：res.code
+          this.code = res.code
+          console.log('用户的code:' + res.code)
+        }
+      })
+      this.$apply()
+    }
+  }
+</script>
+
+<style lang='less'>
+  image {
+    width: 200px;
+    height: 100px;
+    margin: 0 20%;
+  }
+  .container {
+    padding: 20px 0;
+  }
+  form {
+    width: 310px;
+    height: 240px;
+    line-height: 40px;
+    /* border: 1px solid red;  */
+  }
+  input {
+    border: 1px solid #ccc;
+    width: 310px;
+    height: 40px;
+  }
+  .button {
+    margin-top: 20px;
+  }
+  .header {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .header text {
+    font-size: 16px;
+    color: #666;
+  }
+  .section {
+    margin-bottom: 10px;
+  }
+  form text {
+    font-size: 20px;
+    color: pink;
+  }
+  .fpwd {
+    margin-top: 200px;
+  }
+</style>

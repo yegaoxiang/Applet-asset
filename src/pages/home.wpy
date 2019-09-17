@@ -1,0 +1,34 @@
+<template>
+  <view>
+    <!-- 资产 -->
+    <van-cell wx:for="item in 6"
+              wx:key="{{item}}"
+              is-link
+              title="维修编号:ES0001"
+              label="名称:笔记本  归还日期:2019-08-01"
+              link-type="navigateTo"
+              url="/pages/assetUse" />
+
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Home extends wepy.page {
+    config = {
+      navigationBarTitleText: '我的资产',
+      navigationBarBackgroundColor: '#005BAC',
+      navigationBarTextStyle: 'white',
+      usingComponents: {
+        'van-cell': '../weapp/cell/index',
+        'van-cell-group': '../weapp/cell-group/index',
+        'van-tab': '../weapp/tab/index',
+        'van-tabs': '../weapp/tabs/index'
+      }
+    }
+  }
+</script>
+
+<style lang='less'>
+</style>

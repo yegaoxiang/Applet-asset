@@ -1,0 +1,59 @@
+<template>
+  <view>
+    <!--pages/mine/mine.wxml-->
+    <view class="conten">
+      <text>账号：472820\n</text>
+      <text>企业:一芯智能科技有限公司</text>
+    </view>
+    <view class="tabe">
+      <van-collapse value="{{ activeNames }}"
+                    bind:change="onChange">
+        <van-collapse-item name="1">
+          <view slot="title">银行流水
+            <van-icon name="question-o" />
+          </view>
+          <text>2019-02-29\n</text>
+          <text>2019-02-30</text>
+        </van-collapse-item>
+        <van-collapse-item title="打印"
+                           name="2"
+                           icon="shop-o">
+          网店吸粉获客、会员分层营销、一机多种收款，告别经营低效和客户流失
+        </van-collapse-item>
+      </van-collapse>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Mine extends wepy.page {
+    config = {
+      navigationBarTitleText: '我的',
+      navigationBarBackgroundColor: '#005BAC',
+      navigationBarTextStyle: 'white',
+      usingComponents: {
+        'van-collapse': '../weapp/collapse/index',
+        'van-collapse-item': '../weapp/collapse-item/index',
+        'van-icon': '../weapp/icon/index',
+        'van-field': '../weapp/field/index'
+      }
+    }
+    data = {
+      activeNames: []
+    }
+    methods = {
+      onChange(event) {
+        this.activeNames = event.detail
+      }
+    }
+    onLoad() {
+      const token = wepy.getStorageSync('token')
+      console.log(token)
+    }
+  }
+</script>
+
+<style lang='less'>
+</style>

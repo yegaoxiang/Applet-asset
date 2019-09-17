@@ -1,0 +1,47 @@
+<style lang="less">
+</style>
+
+<script>
+  import wepy from 'wepy'
+  // 导入async 包
+  import 'wepy-async-function'
+
+  export default class extends wepy.app {
+    constructor() {
+      super()
+      // 启用 Promise 化接口
+      this.use('promisify')
+    }
+    config = {
+      pages: ['pages/index', 'pages/home', 'pages/mine', 'pages/assetUse'],
+      window: {
+        backgroundTextStyle: 'light',
+        navigationBarBackgroundColor: '#fff',
+        navigationBarTitleText: '',
+        navigationBarTextStyle: 'black'
+      },
+      tabBar: {
+        selectedColor: '#0000CD',
+        borderStyle: 'black',
+        list: [
+          {
+            pagePath: 'pages/home',
+            text: '我的资产',
+            iconPath: './img/images/u137.png',
+            selectedIconPath: './img/images/u69.png'
+          },
+          {
+            pagePath: 'pages/mine',
+            text: '我的',
+            iconPath: './img/images/u67.png',
+            selectedIconPath: './img/images/u139.png'
+          }
+        ]
+      }
+    }
+
+    onLaunch() {
+      console.log('on launch')
+    }
+  }
+</script>
